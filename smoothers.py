@@ -1,6 +1,7 @@
 import torch
 import torch.nn.functional as F
 
+"""Define the smoothing operators for each grid type"""
 
 def jacobi_smoothing(u, f, dx, dy, iters=1, omega=.8, lambd=0.):
     """ω-Jacobi relaxation method for vertex-centered grid with Dirichlet boundary conditions"""

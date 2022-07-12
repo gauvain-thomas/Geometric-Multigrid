@@ -1,6 +1,8 @@
 import torch
 import torch.nn.functional as F
 
+"""Define the transfer operators for each grid type"""
+
 def restrict(v, mode="FW"):
     """Restrict v to the coarse grid : Dirichlet odd-sized"""
     nx, ny = v.shape[-2:]

@@ -1,5 +1,6 @@
 """
-A python-numpy implementation for a geometric multigrid Poisson/Helmoltz solver
+Python/PyTorch implementation of a geometric multigrid (MG) solver for elliptic
+equations, such as Poisson and Helmholtz-like equations
 Equations are of the form : Δu - λu = f
 """
 
@@ -124,15 +125,6 @@ class MG():
 
     def solve(self, f):
         return self.FMG(f, self.dx, self.dy)
-
-    def _solveV(self, f):
-        u = torch.zeros_like(f, dtype=self.dtype, device=self.device)
-        u, res = self.V_cycle(self.nlevels, u, f, self.dx, self.dy)
-        nres = res.norm()/f.norm()
-        while nres > self.tol:
-            u, res = self.V_cycle(self.nlevels, u, f, self.dx, self.dy)
-            nres = res.norm()/f.norm()
-        return u, res
 
     def Two_cycles(self, u, f, dx, dy):
 

@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch.nn.functional as F
 
-if __name__ == '__main__':
+if __name__ == '__mmain__':
     # DIRICHLET BOUNDARY CONDITIONS
     nlevels    = 8
     NX         = 2*2**(nlevels-1)
@@ -40,7 +40,9 @@ if __name__ == '__main__':
 
 
     mg = MG(dx=DX, dy=DY, nx=NX+1, ny=NY+1, nl=2, nlevels=nlevels, grid_type='vertex-centered', boundary_cond='dirichlet')
-    u, res = mg.solve(delta_f_orig)
+    # u, res = mg.solve(delta_f_orig)
+    u = torch.zeros_like(delta_f_orig)
+    u, res = mg.V_cycle(nlevels, u, delta_f_orig, DX, DY)
 
     u, f_orig, res = u.cpu(), f_orig.cpu(), res.cpu()
     error = f_orig[...,1:-1, 1:-1] - u[...,1:-1, 1:-1]
@@ -112,6 +114,8 @@ if __name__ == '__main__':
     u = torch.zeros_like(delta_f_orig, device=device, dtype=dtype)
     u, res = mg.solve(delta_f_orig)
     # u = jacobi_smoothingN2(u, delta_f_orig, DX, DY, 10000)
+    # u = torch.zeros_like(delta_f_orig)
+    # u, res = mg.V_cycle(nlevels, u, delta_f_orig, DX, DY)
 
     u, f_orig, res = u.cpu(), f_orig.cpu(), res.cpu()
     error = f_orig[...,1:-1, 1:-1] - u[...,1:-1, 1:-1]
